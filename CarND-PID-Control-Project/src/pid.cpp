@@ -16,6 +16,7 @@ void PID::init(double k_p, double k_i, double k_d)
   p_error_ = 0.0;
   i_error_ = 0.0;
   d_error_ = 0.0;
+  sse_ = 0.0;
 
   k_p_ = k_p;
   k_i_ = k_i;
@@ -44,13 +45,12 @@ double PID::calculate()
   return output;
 }
 
-
-void PID::updateError(double cte)
+void PID::updateError(double error)
 {
   // update proportional error
-  p_error_ = cte;
+  p_error_ = error;
 
-  // update integral error (rolling average)
+  // update integral error
   if (p_error_*p_error_history_.front() < 0) {
     // reset integral error if the proportional error changes sign
     i_error_ = 0;
@@ -58,6 +58,7 @@ void PID::updateError(double cte)
   }
   else
   {
+    // apply rolling average
     if (i_time_ < i_max_time_)
     {
       i_error_ *= i_time_;
@@ -77,36 +78,11 @@ void PID::updateError(double cte)
   p_error_history_.pop();
   p_error_history_.push(p_error_);
 
-  errorVariance(); // update sum of square error
+  // update SSE
+  sse_ += p_error_*p_error_;
 }
 
-void PID::errorVariance()
+double PID::get_sse()
 {
-  if (v_time_ < v_max_time_)
-  {
-    variance_ *= v_time_;
-    variance_ += p_error_*p_error_;
-    v_time_++;
-    variance_ /= v_time_;
-  }
-  else
-  {
-    variance_ -= variance_/v_max_time_;
-    variance_ += p_error_*p_error_/v_max_time_;
-  }
-}
-
-void PID::updateGain(double speed)
-{
-  double speed_ref = 33.0;
-  double k_p_ref = 0.2;
-  double k_i_ref = 0.2;
-  double k_d_ref = 2.0;
-
-  // The gains are both linearly dependent on the speed
-  double ratio = speed/speed_ref;
-
-//  k_p_ = k_p_ref*ratio;
-//  k_i_ = k_i_ref*ratio;
-  k_d_ = k_d_ref*(0.4*ratio*ratio + 0.6*ratio);
+  return sse_;
 }

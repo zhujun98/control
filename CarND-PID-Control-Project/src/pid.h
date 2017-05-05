@@ -32,25 +32,24 @@ public:
   double calculate();
 
   //
+  // sse getter
+  //
+  double get_sse();
+
+  //
   // Update the PID error variables given cross track error.
   //
   // @param cte: cross-track error
   //
-  void updateError(double cte);
+  void updateError(double error);
 
-  //
-  // Update the PID coefficients
-  //
-  // @param speed: measured car speed
-  //
-  void updateGain(double speed);
 
 private:
 
   double p_error_; // error
   double i_error_; // integral of error
   double d_error_; // derivative of error
-  double variance_; // variance of error
+  double sse_; // sum of squared errors
 
   // pid coefficients
   double k_p_; // proportional gain
@@ -62,15 +61,10 @@ private:
 
   int d_time_; // derivative time interval
 
-  int v_time_; // current error variance integral time
-  int v_max_time_; // maximum integral time for error variance
+  // A queue to store the p error history
+  // - Only for derivative error calculation!
+  std::queue<double> p_error_history_;
 
-  std::queue<double> p_error_history_; // A queue to store the p error history
-
-  //
-  // Update the error variance
-  //
-  void errorVariance();
 };
 
 #endif /* PID_H */

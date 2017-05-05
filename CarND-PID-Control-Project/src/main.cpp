@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <uWS/uWS.h>
 #include "json.hpp"
 #include "pid.h"
@@ -12,11 +13,13 @@ int main()
 {
   uWS::Hub h;
 
+  std::ofstream historyFile;
+
   PID pid;
 
-  pid.init(0.20, 0.05, 3.0);
+  pid.init(0.20, 0.20, 4.0);
 
-  h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
+  h.onMessage([&pid, &historyFile](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
     // "42" at the start of the message means there's a websocket message event.
     // "4" signifies a websocket message
@@ -35,14 +38,14 @@ int main()
           double speed = std::stod(j[1]["speed"].get<std::string>());
           double angle = std::stod(j[1]["steering_angle"].get<std::string>());
           double steer_value;
-
-          // Update PID coefficients
-//          pid.updateGain(speed);
+          double throttle = 0.3;
 
           pid.updateError(cte);
 
           // Calculate steering value [-1, 1].
           steer_value = pid.calculate();
+
+          double sse = pid.get_sse();
 
           if (steer_value < -1.0)
           {
@@ -56,9 +59,12 @@ int main()
           // DEBUG
           std::cout << "CTE: " << cte << ", Steering Value: " << steer_value << std::endl;
 
+          historyFile << cte << "\t" << sse << "\t" << steer_value
+                      << "\t" << speed << "\n";
+
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = 0.3;
+          msgJson["throttle"] = throttle;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
@@ -89,13 +95,15 @@ int main()
     }
   });
 
-  h.onConnection([&h](uWS::WebSocket<uWS::SERVER> ws, uWS::HttpRequest req)
+  h.onConnection([&h, &historyFile](uWS::WebSocket<uWS::SERVER> ws, uWS::HttpRequest req)
   {
     std::cout << "Connected!!!" << std::endl;
+    historyFile.open("./output/history.txt");
   });
 
-  h.onDisconnection([&h](uWS::WebSocket<uWS::SERVER> ws, int code, char *message, size_t length)
+  h.onDisconnection([&h, &historyFile](uWS::WebSocket<uWS::SERVER> ws, int code, char *message, size_t length)
   {
+    historyFile.close();
     ws.close();
     std::cout << "Disconnected" << std::endl;
   });
