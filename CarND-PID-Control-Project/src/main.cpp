@@ -78,8 +78,7 @@ int main()
 
             std::string reset_msg = "42[\"reset\",{}]";
             ws.send(reset_msg.data(), reset_msg.length(), uWS::OpCode::TEXT);
-
-            historyFile.open("./output/history.txt");
+            
             sleep(5); // give time for the simulator to restart
           }
 
