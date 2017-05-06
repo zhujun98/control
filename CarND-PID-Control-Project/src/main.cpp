@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <uWS/uWS.h>
+#include <cmath>
+#include <time.h>
 #include "json.hpp"
 #include "pid.h"
 #include "utilities.h"
@@ -15,11 +17,18 @@ int main()
 
   std::ofstream historyFile;
 
-  PID pid;
+  // steer pid controller
+  PID steer_pid;
+  steer_pid.init(0.2, 0.2, 4.0, 1);
+  steer_pid.twiddle_init(0.05, 0.05, 1.0, 600);
 
-  pid.init(0.20, 0.20, 4.0);
+  // throttle pid controller
+  PID throttle_pid;
+  throttle_pid.init(0.1, 0.0, 0.0, 1);
+  // throttle_pid.twiddle_init(1, 1, 1, 1400);
 
-  h.onMessage([&pid, &historyFile](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
+  h.onMessage([&steer_pid, &throttle_pid, &historyFile](
+      uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
     // "42" at the start of the message means there's a websocket message event.
     // "4" signifies a websocket message
@@ -37,36 +46,56 @@ int main()
           double cte = std::stod(j[1]["cte"].get<std::string>());
           double speed = std::stod(j[1]["speed"].get<std::string>());
           double angle = std::stod(j[1]["steering_angle"].get<std::string>());
+
           double steer_value;
-          double throttle = 0.3;
+          double steer_sse;
 
-          pid.updateError(cte);
+          int is_restart;
 
-          // Calculate steering value [-1, 1].
-          steer_value = pid.calculate();
+          double target_speed;
+          double speed_error;
+          double throttle;
+          double speed_sse;
 
-          double sse = pid.get_sse();
+          // update steer
+          steer_pid.updateError(cte);
+          steer_value = steer_pid.calculate(); // Calculate steering value [-1, 1]
+          steer_sse = steer_pid.get_sse();
+          is_restart = steer_pid.twiddle();
 
-          if (steer_value < -1.0)
+          // update throttle
+          target_speed = 30.0 + 70.0*std::abs(std::abs(steer_value) - 1.0);
+          speed_error = speed - target_speed;
+          throttle_pid.updateError(speed_error);
+          throttle = throttle_pid.calculate();
+          speed_sse = throttle_pid.get_sse();
+          // throttle_pid.twiddle();
+
+          // reset the simulator
+          if (is_restart)
           {
-            steer_value = -1.0;
-          }
-          if (steer_value > 1.0)
-          {
-            steer_value = 1.0;
+            historyFile.close();
+
+            std::string reset_msg = "42[\"reset\",{}]";
+            ws.send(reset_msg.data(), reset_msg.length(), uWS::OpCode::TEXT);
+
+            historyFile.open("./output/history.txt");
+            sleep(5); // give time for the simulator to restart
           }
 
-          // DEBUG
-          std::cout << "CTE: " << cte << ", Steering Value: " << steer_value << std::endl;
+          // cap the steering
+          if (steer_value < -1.0) { steer_value = -1.0; }
+          if (steer_value > 1.0) { steer_value = 1.0; }
 
-          historyFile << cte << "\t" << sse << "\t" << steer_value
-                      << "\t" << speed << "\n";
+          // write the results to file for visualization later
+          historyFile << cte << "\t" << steer_value << "\t" << steer_sse
+                      << "\t" << speed << speed_sse<< "\n";
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
           msgJson["throttle"] = throttle;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
-          std::cout << msg << std::endl;
+//          std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }
       }

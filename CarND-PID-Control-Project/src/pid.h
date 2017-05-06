@@ -20,11 +20,19 @@ public:
   //
   // Initiazation
   //
-  // @param Kp: proportional term
-  // @param Ki: integral term
-  // @param Kd: derivative term
+  // @param k_p: proportional term
+  // @param k_i: integral term
+  // @param k_d: derivative term
+  // @param k_d_interval: derivative time interval
   //
-  void init(double Kp, double Ki, double Kd);
+  void init(double k_p, double k_i, double k_d, int k_d_interval);
+
+  //
+  // Update the PID error variables given cross track error.
+  //
+  // @param error: cross-track error
+  //
+  void updateError(double error);
 
   //
   // Calculate the output from the cross-track error
@@ -32,16 +40,24 @@ public:
   double calculate();
 
   //
+  // run twiddle optimization
+  //
+  int twiddle();
+
+  //
+  // initialize twiddle
+  //
+  // @param d_kp: initial step size for kp
+  // @param d_ki: initial step size for ki
+  // @param d_kd: initial step size for kd
+  // @param t: time duration for each run (here the number of steps)
+  //
+  void twiddle_init(double d_kp, double d_ki, double d_kd, int t);
+
+  //
   // sse getter
   //
   double get_sse();
-
-  //
-  // Update the PID error variables given cross track error.
-  //
-  // @param cte: cross-track error
-  //
-  void updateError(double error);
 
 
 private:
@@ -51,10 +67,9 @@ private:
   double d_error_; // derivative of error
   double sse_; // sum of squared errors
 
-  // pid coefficients
-  double k_p_; // proportional gain
-  double k_i_; // integral gain
-  double k_d_; // derivative gain
+  double kp_; // proportional gain
+  double ki_; // integral gain
+  double kd_; // derivative gain
 
   int i_time_; // current integral time
   int i_max_time_; // maximum integral time
@@ -64,6 +79,27 @@ private:
   // A queue to store the p error history
   // - Only for derivative error calculation!
   std::queue<double> p_error_history_;
+
+  // parameters for twiddle
+  bool is_twiddle_initialized_; // twiddle initialization flag
+  int twiddle_count_; // time step count for twiddle
+  int twiddle_duration_; // max duration for twiddle
+  int twiddle_substate_; // sub-state for twiddle: 0 (increase) or 1 (decrease)
+  int twiddle_state_; // state for twiddle: 0 (p), 1 (i) and 2 (d)
+  double sse_best_; // best sse achieved
+  double d_kp_; // current kp step
+  double d_ki_; // current ki step
+  double d_kd_; // current kd step
+
+  //
+  // shift to the next twiddle state
+  //
+  void next_twiddle_state();
+
+  //
+  // shift to the next twiddle substate
+  //
+  void next_twiddle_substate();
 
 };
 

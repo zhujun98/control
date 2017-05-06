@@ -9,25 +9,16 @@
 
 
 // For converting back and forth between radians and degrees.
-constexpr double pi()
-{
-  return M_PI;
-}
+constexpr double pi() { return M_PI; }
 
-inline double deg2rad(double x)
-{
-  return x * pi() / 180;
-}
+inline double deg2rad(double x) { return x * pi() / 180; }
 
-inline double rad2deg(double x)
-{
-  return x * 180 / pi();
-}
+inline double rad2deg(double x) { return x * 180 / pi(); }
 
 // Checks if the SocketIO event has JSON data.
 // If there is data the JSON object in string format will be returned,
 // else the empty string "" will be returned.
-std::string hasData(std::string s)
+inline std::string hasData(std::string s)
 {
   auto found_null = s.find("null");
   auto b1 = s.find_first_of("[");
@@ -42,6 +33,5 @@ std::string hasData(std::string s)
   }
   return "";
 }
-
 
 #endif //PID_UTILITIES_H
