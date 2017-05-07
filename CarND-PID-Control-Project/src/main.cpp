@@ -19,8 +19,8 @@ int main()
 
   // steer pid controller
   PID steer_pid;
-  steer_pid.init(0.2, 0.2, 4.0, 1);
-  steer_pid.twiddle_init(0.05, 0.05, 1.0, 600);
+  steer_pid.init(0.212537, 0.292104, 3.21017, 1);
+  // steer_pid.twiddle_init(0.05, 0.05, 1.0, 1500);
 
   // throttle pid controller
   PID throttle_pid;
@@ -61,10 +61,10 @@ int main()
           steer_pid.updateError(cte);
           steer_value = steer_pid.calculate(); // Calculate steering value [-1, 1]
           steer_sse = steer_pid.get_sse();
-          is_restart = steer_pid.twiddle();
+          // is_restart = steer_pid.twiddle();
 
           // update throttle
-          target_speed = 30.0 + 70.0*std::abs(std::abs(steer_value) - 1.0);
+          target_speed = 30.0 + 10.0*std::abs(std::abs(steer_value) - 1.0);
           speed_error = speed - target_speed;
           throttle_pid.updateError(speed_error);
           throttle = throttle_pid.calculate();
@@ -78,7 +78,7 @@ int main()
 
             std::string reset_msg = "42[\"reset\",{}]";
             ws.send(reset_msg.data(), reset_msg.length(), uWS::OpCode::TEXT);
-            
+
             sleep(5); // give time for the simulator to restart
           }
 
@@ -88,7 +88,7 @@ int main()
 
           // write the results to file for visualization later
           historyFile << cte << "\t" << steer_value << "\t" << steer_sse
-                      << "\t" << speed << speed_sse<< "\n";
+                      << "\t" << speed << "\n";
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
