@@ -45,11 +45,20 @@ The manually tuned coefficients are Kp=0.20, Ki=0.20, Kd=4.0 with an integration
 
 ## Optimization with twiddle
 
+A throttle PID controller is added and the flow chart is shown below.
+
+![alt text](./PID-flowchart.png)
+
+The PID gains were optimized using the "twiddle" algorithm. The following plots show the evolutions of different parameters in one lap. Note that the speed is higher than the previous case.
+
  ![alt text](./output/twiddle_optimized.png)
+ 
+ Click to play the video:
  
  [![alt text](http://img.youtube.com/vi/bJhQG3MFG8c/0.jpg)](http://www.youtube.com/watch?v=bJhQG3MFG8c)
 
 ## Reference
 
 [1] N. Melder and S. Tomlinson, "Game AI Pro" - Chapter 40.
+[2] [Twiddle algorithm](https://www.youtube.com/watch?v=2uQ2BSzDvXs) by S. Thrun
 
