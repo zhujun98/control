@@ -41,9 +41,11 @@ The manually tuned coefficients are Kp=0.20, Ki=0.20, Kd=4.0 with an integration
 
 ![alt text](./output/manually_optimized_kp0p2_ki_0p2_kd_4p0.png)
 
-## Adaptive control
+## Optimization with twiddle
 
+ ![alt text](./output/twiddle_optimized.png)
  
+ [![alt text](./highlight.png)](https://youtu.be/bJhQG3MFG8c)
 
 ## Reference
 
