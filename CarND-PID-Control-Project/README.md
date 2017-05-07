@@ -33,6 +33,9 @@ sudo ln -s /usr/lib64/libuWS.so /usr/lib/libuWS.so
 
 ## Tune
 
+A basic PID controller is implemented. The throttle is constant (0.3).
+![alt text](./PID-flowchart-1.png)
+
 Tuning of the PID controller can be divided into three steps:
 
 1. Set 'i' term and 'd' term to 0 and increase the 'p' term until the car starts to oscillate. Since there are many turns on the road, it is impossible to find a steady state. The car will soon lose control.
@@ -47,7 +50,7 @@ The manually tuned coefficients are Kp=0.20, Ki=0.20, Kd=4.0 with an integration
 
 A throttle PID controller is added and the flow chart is shown below.
 
-![alt text](./PID-flowchart.png)
+![alt text](./PID-flowchart-2.png)
 
 The PID gains were optimized using the "twiddle" algorithm. The following plots show the evolutions of different parameters in one lap. Note that the speed is higher than the previous case.
 
