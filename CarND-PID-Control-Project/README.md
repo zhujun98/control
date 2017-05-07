@@ -59,6 +59,6 @@ The PID gains were optimized using the "twiddle" algorithm. The following plots 
 
 ## Reference
 
-[1] N. Melder and S. Tomlinson, "Game AI Pro" - Chapter 40.
-[2] [Twiddle algorithm](https://www.youtube.com/watch?v=2uQ2BSzDvXs) by S. Thrun
+- N. Melder and S. Tomlinson, "Game AI Pro" - Chapter 40.
+- [Twiddle algorithm](https://www.youtube.com/watch?v=2uQ2BSzDvXs) by S. Thrun
 
