@@ -3,7 +3,7 @@
 
 Jun Zhu
 
-![alt
+![alt text](./highlight.png)
 
 ---
 
