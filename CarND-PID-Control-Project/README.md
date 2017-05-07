@@ -3,6 +3,8 @@
 
 Jun Zhu
 
+![alt
+
 ---
 
 ## Dependencies
@@ -45,7 +47,7 @@ The manually tuned coefficients are Kp=0.20, Ki=0.20, Kd=4.0 with an integration
 
  ![alt text](./output/twiddle_optimized.png)
  
- [![alt text](./highlight.png)](https://youtu.be/bJhQG3MFG8c)
+ [![alt text](http://img.youtube.com/vi/bJhQG3MFG8c/0.jpg)](http://www.youtube.com/watch?v=bJhQG3MFG8c)
 
 ## Reference
 
