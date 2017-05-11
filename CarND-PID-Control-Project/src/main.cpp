@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <uWS/uWS.h>
-#include <cmath>
-#include <time.h>
 #include "json.hpp"
 #include "pid.h"
 #include "utilities.h"
@@ -20,11 +18,11 @@ int main()
   // steer pid controller
   PID steer_pid;
   steer_pid.init(0.212537, 0.292104, 3.21017, 1);
-  // steer_pid.twiddle_init(0.05, 0.05, 1.0, 1500);
+  steer_pid.twiddle_init(0.05, 0.05, 1.0, 400);
 
   // throttle pid controller
   PID throttle_pid;
-  throttle_pid.init(0.1, 0.0, 0.0, 1);
+  throttle_pid.init(0.2, 0.0, 0.0, 1);
   // throttle_pid.twiddle_init(1, 1, 1, 1400);
 
   h.onMessage([&steer_pid, &throttle_pid, &historyFile](
@@ -47,29 +45,31 @@ int main()
           double speed = std::stod(j[1]["speed"].get<std::string>());
           double angle = std::stod(j[1]["steering_angle"].get<std::string>());
 
-          double steer_value;
-          double steer_sse;
+          int is_restart = 0;
 
-          int is_restart;
-
-          double target_speed;
-          double speed_error;
-          double throttle;
-          double speed_sse;
-
+          //
           // update steer
+          //
           steer_pid.updateError(cte);
-          steer_value = steer_pid.calculate(); // Calculate steering value [-1, 1]
-          steer_sse = steer_pid.get_sse();
-          // is_restart = steer_pid.twiddle();
+          double steer_sse = steer_pid.get_sse();
 
+          double steer_value = steer_pid.calculate(); // Calculate steering value [-1, 1]
+          // cap the steering
+          if (steer_value < -1.0) { steer_value = -1.0; }
+          if (steer_value > 1.0) { steer_value = 1.0; }
+
+          if (steer_pid.is_twiddle_) { is_restart = steer_pid.twiddle(); }
+
+          //
           // update throttle
-          target_speed = 30.0 + 10.0*std::abs(std::abs(steer_value) - 1.0);
-          speed_error = speed - target_speed;
+          //
+          double target_speed = 30.0 + 10.0*std::abs(std::abs(steer_value) - 1.0);
+          double speed_error = speed - target_speed;
           throttle_pid.updateError(speed_error);
-          throttle = throttle_pid.calculate();
-          speed_sse = throttle_pid.get_sse();
-          // throttle_pid.twiddle();
+          double throttle_value = throttle_pid.calculate();
+          double speed_sse = throttle_pid.get_sse();
+
+          if (throttle_pid.is_twiddle_) { is_restart = throttle_pid.twiddle(); }
 
           // reset the simulator
           if (is_restart)
@@ -82,19 +82,18 @@ int main()
             sleep(5); // give time for the simulator to restart
           }
 
-          // cap the steering
-          if (steer_value < -1.0) { steer_value = -1.0; }
-          if (steer_value > 1.0) { steer_value = 1.0; }
-
           // write the results to file for visualization later
           historyFile << cte << "\t" << steer_value << "\t" << steer_sse
                       << "\t" << speed << "\n";
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = throttle;
+          msgJson["throttle"] = throttle_value;
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
-//          std::cout << msg << std::endl;
+          // printout message when not twiddling
+          if ( !steer_pid.is_twiddle_ && !throttle_pid.is_twiddle_ ) {
+            std::cout << msg << std::endl;
+          }
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }
       }

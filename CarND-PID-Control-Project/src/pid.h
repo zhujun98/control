@@ -17,6 +17,8 @@ public:
   // destructor
   virtual ~PID();
 
+  bool is_twiddle_; // twiddle flag
+
   //
   // Initiazation
   //

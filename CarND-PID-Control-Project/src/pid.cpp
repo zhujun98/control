@@ -36,6 +36,7 @@ void PID::init(double kp, double ki, double kd, int kd_interval)
   d_kp_ = 0.0;
   d_ki_ = 0.0;
   d_kd_ = 0.0;
+  is_twiddle_ = false;
   is_twiddle_initialized_ = false;
   twiddle_count_ = 0;
   twiddle_duration_ = 1;
@@ -101,6 +102,7 @@ void PID::twiddle_init(double d_kp, double d_ki, double d_kd, int t)
   d_kd_ = d_kd;
   twiddle_duration_ = t;
 
+  is_twiddle_ = true;
   is_twiddle_initialized_ = false;
   twiddle_count_ = 0;
   twiddle_state_ = 0;
@@ -149,8 +151,8 @@ int PID::twiddle()
     twiddle_count_ = 0; // reset the twiddle count
 
     // output for debug
-    std::cout << "SSE: " << sse_ << "  "
-              << "SSE best: " << sse_best_ << "  "
+    std::cout << "SSE best: " << sse_best_ << "  "
+              << "SSE: " << sse_ << "  "
               << "Kp: " << kp_ << "  "
               << "Ki: " << ki_ << "  "
               << "Kd: " << kd_ << std::endl;
