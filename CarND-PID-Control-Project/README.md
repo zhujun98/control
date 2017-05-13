@@ -68,4 +68,6 @@ Therefore, the controller was again optimized by hand. As a general rule, if the
 
 - N. Melder and S. Tomlinson, "Game AI Pro" - Chapter 40.
 - [Twiddle algorithm](https://www.youtube.com/watch?v=2uQ2BSzDvXs) by S. Thrun
-
+- [Self-tuning PID controller for autonomous car tracking in urban traffic](http://ieeexplore.ieee.org/document/6688929/)
+- https://robotics.stackexchange.com/questions/167/what-are-good-strategies-for-tuning-pid-loops
+- [An introduction and tutorial for PID controllers by George Gillard](http://smithcsrobot.weebly.com/uploads/6/0/9/5/60954939/pid_control_document.pdf)
