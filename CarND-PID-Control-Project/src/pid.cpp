@@ -11,7 +11,7 @@ PID::PID() {}
 
 PID::~PID() {}
 
-void PID::init(double kp, double ki, double kd, int kd_interval)
+void PID::init(double kp, double ki, double kd, int dt)
 {
   p_error_ = 0.0;
   i_error_ = 0.0;
@@ -23,14 +23,14 @@ void PID::init(double kp, double ki, double kd, int kd_interval)
   kd_ = kd;
 
   i_time_ = 0;
-  i_max_time_ = 100;
+  i_max_time_ = 50;
 
-  d_time_ = kd_interval;
+  d_time_ = dt;
 
   // Fill the queue first
   for (int i=0; i<d_time_; ++i)
   {
-    p_error_history_.push(0.0);
+    error_history_.push_back(0.0);
   }
 
   d_kp_ = 0.0;
@@ -57,39 +57,44 @@ double PID::calculate()
 
 void PID::updateError(double error)
 {
-  // update proportional error
+
+  // store error
+  error_history_.pop_front();
+  error_history_.push_back(error);
+
+  // update proportional error (rolling average)
   p_error_ = error;
 
-  // update integral error
-  if (p_error_*p_error_history_.front() < 0) {
-    // reset integral error if the proportional error changes sign
+  // update the integral error
+  if (error*error_history_.front() <= 0)
+  {
+    // reset integral error if it changes sign
     i_error_ = 0;
     i_time_ = 0;
   }
   else
   {
-    // apply rolling average
+    // update integral error (rolling average)
     if (i_time_ < i_max_time_)
     {
       i_error_ *= i_time_;
-      i_error_ += p_error_;
-      i_time_++;
-      i_error_ /= i_time_;
+      i_error_ += error;
+      i_error_ /= i_time_ + 1;
     }
     else
     {
       i_error_ -= i_error_/i_max_time_;
-      i_error_ += p_error_/i_max_time_;
+      i_error_ += error/i_max_time_;
     }
   }
 
   // update derivative error
-  d_error_ = (p_error_ - p_error_history_.front())/d_time_;
-  p_error_history_.pop();
-  p_error_history_.push(p_error_);
+  d_error_ = (error - error_history_.front())/d_time_;
 
   // update SSE
   sse_ += p_error_*p_error_;
+
+  ++i_time_;
 }
 
 void PID::twiddle_init(double d_kp, double d_ki, double d_kd, int t)

@@ -17,13 +17,12 @@ int main()
 
   // steer pid controller
   PID steer_pid;
-  steer_pid.init(0.212537, 0.292104, 3.21017, 1);
-  steer_pid.twiddle_init(0.05, 0.05, 1.0, 400);
+  steer_pid.init(0.075, 0.075, 2.50, 2);
+//  steer_pid.twiddle_init(0.01, 0.01, 0.02, 1500);
 
   // throttle pid controller
   PID throttle_pid;
-  throttle_pid.init(0.2, 0.0, 0.0, 1);
-  // throttle_pid.twiddle_init(1, 1, 1, 1400);
+  throttle_pid.init(1.0, 0.0, 4.0, 2);
 
   h.onMessage([&steer_pid, &throttle_pid, &historyFile](
       uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
@@ -52,7 +51,6 @@ int main()
           //
           steer_pid.updateError(cte);
           double steer_sse = steer_pid.get_sse();
-
           double steer_value = steer_pid.calculate(); // Calculate steering value [-1, 1]
           // cap the steering
           if (steer_value < -1.0) { steer_value = -1.0; }
@@ -63,11 +61,9 @@ int main()
           //
           // update throttle
           //
-          double target_speed = 30.0 + 10.0*std::abs(std::abs(steer_value) - 1.0);
-          double speed_error = speed - target_speed;
-          throttle_pid.updateError(speed_error);
+          double throttle_input = -1.0/(4*cte*cte + 1.0);
+          throttle_pid.updateError(throttle_input);
           double throttle_value = throttle_pid.calculate();
-          double speed_sse = throttle_pid.get_sse();
 
           if (throttle_pid.is_twiddle_) { is_restart = throttle_pid.twiddle(); }
 

@@ -5,7 +5,7 @@
 #ifndef PID_H
 #define PID_H
 
-#include <queue>
+#include <deque>
 
 
 class PID
@@ -25,9 +25,10 @@ public:
   // @param k_p: proportional term
   // @param k_i: integral term
   // @param k_d: derivative term
-  // @param k_d_interval: derivative time interval
+  // @param dt: rolling average time span for p_error_
+  //            and derivative time interval for d_error_
   //
-  void init(double k_p, double k_i, double k_d, int k_d_interval);
+  void init(double k_p, double k_i, double k_d, int dt);
 
   //
   // Update the PID error variables given cross track error.
@@ -80,7 +81,7 @@ private:
 
   // A queue to store the p error history
   // - Only for derivative error calculation!
-  std::queue<double> p_error_history_;
+  std::deque<double> error_history_;
 
   // parameters for twiddle
   bool is_twiddle_initialized_; // twiddle initialization flag
