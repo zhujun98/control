@@ -31,7 +31,7 @@ sudo ln -s /usr/lib64/libuWS.so /usr/lib/libuWS.so
 2. Compile: `cmake .. && make`
 3. Run it: `./pid`. 
 
-## Tune
+## Single PID controller
 
 A basic PID controller is implemented. The throttle is constant (0.3).
 ![alt text](./PID-flowchart-1.png)
@@ -40,26 +40,30 @@ Tuning of the PID controller can be divided into three steps:
 
 1. Set 'i' term and 'd' term to 0 and increase the 'p' term until the car starts to oscillate. Since there are many turns on the road, it is impossible to find a steady state. The car will soon lose control.
 2. Since it is difficult to define the steady state error, the second step is to increase the 'd' term until the car can finish a lap without strong oscillation.
-3. In the last step, a small 'i' term can be added. In principle, however, the car can run steadily without the 'i' term in the simulator.
+3. In the last step, 'i' term can be added. In principle, however, the car can run steadily without the 'i' term in the simulator.
 
 The manually tuned coefficients are Kp=0.20, Ki=0.20, Kd=4.0 with an integration time of 100 and derivative time step of 1. The evolutions of different parameters are shown below. However, this only works when the throttle is around 0.3 (speed in the stead state is around 30 mph). As the throttle/speed increases, the car will quickly lose control.
 
 ![alt text](./output/manually_optimized_kp0p2_ki_0p2_kd_4p0.png)
 
-## Optimization with twiddle
+## Two PID controllers
 
 A throttle PID controller is added and the flow chart is shown below.
 
 ![alt text](./PID-flowchart-2.png)
 
-The PID gains were optimized using the "twiddle" algorithm. The following plots show the evolutions of different parameters in one lap. Note that the speed is higher than the previous case.
+It was found that the "twiddle" algorithm does not work well because of two reasons:
+[1] The result is random for one-lap run (partially because of the random initial position of the car).
+[2] There are so many local minimums (working points).
 
- ![alt text](./output/twiddle_optimized.png)
+Therefore, the controller was again optimized by hand. As a general rule, if the car cannot make a sharp turn, increase Ki. If it oscillates, reduce Kp and Ki. If it is too slow to change or a positive feedback is found during the oscilation (throwing the car out of the road), then increase Kd. In addition, the integration time was reduced to 50 and the derivative time step was increased to 2.
+
+ ![alt text](./output/two_pids_optimized.png)
  
  Click to play the video:
  
- [![alt text](http://img.youtube.com/vi/bJhQG3MFG8c/0.jpg)](http://www.youtube.com/watch?v=bJhQG3MFG8c)
-
+ [![alt text](http://img.youtube.com/vi/KJeDqcyYKVk/0.jpg)](http://www.youtube.com/watch?v=KJeDqcyYKVk)
+https://youtu.be/
 ## Reference
 
 - N. Melder and S. Tomlinson, "Game AI Pro" - Chapter 40.
