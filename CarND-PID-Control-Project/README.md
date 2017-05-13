@@ -56,14 +56,14 @@ It was found that the "twiddle" algorithm does not work well because of two reas
 [1] The result is random for one-lap run (partially because of the random initial position of the car).
 [2] There are so many local minimums (working points).
 
-Therefore, the controller was again optimized by hand. As a general rule, if the car cannot make a sharp turn, increase Ki. If it oscillates, reduce Kp and Ki. If it is too slow to change or a positive feedback is found during the oscilation (throwing the car out of the road), then increase Kd. In addition, the integration time was reduced to 50 and the derivative time step was increased to 2.
+Therefore, the controller was again optimized by hand. As a general rule, if the car cannot make a sharp turn, increase Ki. If it oscillates, reduce Kp and Ki. If it is too slow to change or a positive feedback is found during the oscillation (throwing the car out of the road), then increase Kd. In addition, the integration time was reduced to 50 and the derivative time step was increased to 2.
 
  ![alt text](./output/two_pids_optimized.png)
  
  Click to play the video:
  
  [![alt text](http://img.youtube.com/vi/KJeDqcyYKVk/0.jpg)](http://www.youtube.com/watch?v=KJeDqcyYKVk)
-https://youtu.be/
+ 
 ## Reference
 
 - N. Melder and S. Tomlinson, "Game AI Pro" - Chapter 40.
