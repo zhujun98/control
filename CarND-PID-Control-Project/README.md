@@ -1,4 +1,4 @@
-# CarND-Controls-PID
+# PID Control
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
 Jun Zhu
@@ -9,6 +9,7 @@ Jun Zhu
 
 ## Dependencies
 
+#### [uWebSockets](https://github.com/uNetworking/uWebSockets) == 0.13
 ```
 sudo apt-get install libssl-dev openssl libuv1-dev zlib1g-dev
 
@@ -24,12 +25,6 @@ sudo make install
 
 sudo ln -s /usr/lib64/libuWS.so /usr/lib/libuWS.so
 ```
-
-## Basic Build Instructions
-
-1. Make a build directory: `mkdir build && cd build`
-2. Compile: `cmake .. && make`
-3. Run it: `./pid`. 
 
 ## Single PID controller
 
