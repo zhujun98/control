@@ -7,7 +7,7 @@ Jun Zhu
 ## PID control
 Implement a PID controller for a simulator in C++.
 
-Details can be found [here](./CarND-PID-Control-Project)
+Details can be found [here](./PidController)
 
 ## Model predictive control
 
