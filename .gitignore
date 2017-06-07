@@ -2,3 +2,7 @@
 .ipynb_checkpoints
 build
 cmake-build-debug
+term2_sim_linux
+Reference
+PID-Controller/output
+PID-Controller/PID Project Linux*
