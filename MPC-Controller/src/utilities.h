@@ -134,6 +134,7 @@ inline Vector globalToCar(T px, T py, T px0, T py0, T psi) {
   T dx = px - px0;
   T dy = py - py0;
 
+  // a rotation clock-wise about the origin
   X_new[0] = dx*c + dy*s;
   X_new[1] = -dx*s + dy*c;
 
