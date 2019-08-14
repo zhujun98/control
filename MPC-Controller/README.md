@@ -13,7 +13,7 @@ Jun Zhu
 ~~~~
 sudo apt-get install libssl-dev openssl libuv1-dev zlib1g-dev
 
-git clone https://github.com/uWebSockets/uWebSockets
+git clone -b v0.13.0 https://github.com/uWebSockets/uWebSockets
 
 cd uWebSockets
 
