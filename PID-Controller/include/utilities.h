@@ -1,6 +1,7 @@
-//
-// Created by jun on 4/28/17.
-//
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
+
 #ifndef PID_UTILITIES_H
 #define PID_UTILITIES_H
 

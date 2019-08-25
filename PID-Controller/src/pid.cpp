@@ -1,15 +1,11 @@
-//
-// pid.cpp
-//
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
 
 #include <iostream>
 #include <cmath>
 #include "pid.h"
 
-
-PID::PID() {}
-
-PID::~PID() {}
 
 void PID::init(double kp, double ki, double kd, int dt)
 {
