@@ -1,28 +1,47 @@
-project(PID)
+#
+# Author: Jun Zhu, zhujun981661@gmail.com
+#
 
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.1)
 
-add_definitions(-std=c++11)
+project(PID-controller LANGUAGES CXX)
 
-set(CXX_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(sources src/pid.cpp
-            src/pid.h
-            src/main.cpp
-            src/utilities.h)
+set(CMAKE_CXX_FLAGS "-Wall")
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") 
+# build uWebSockets at configure time locally
+set(uWS_EXACT_VERSION 0.13.0)
+configure_file(downloadUWsSockets.cmake.in uWebSockets-stage/CMakeLists.txt)
 
-include_directories(/usr/local/include)
-include_directories(/usr/local/opt/openssl/include)
-link_directories(/usr/local/lib)
-link_directories(/usr/local/opt/openssl/lib)
-link_directories(/usr/local/Cellar/libuv/1.11.0/lib)
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-stage
+)
+execute_process(
+    COMMAND ${CMAKE_COMMAND} --build .
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-stage
+)
 
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") 
+add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src
+                 ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build)
 
+file(GLOB uWS_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src/src/*.h)
+file(COPY ${uWS_HEADERS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include/uWS)
+set(uWS_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include)
 
-add_executable(pid ${sources})
+get_target_property(uWS_LIBRARIES uWS INTERFACE_LINK_LIBRARIES)
 
-target_link_libraries(pid z ssl uv uWS)
+add_executable(pid
+    src/pid.cpp
+    src/main.cpp
+    )
+
+target_include_directories(pid
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/include
+        ${CMAKE_CURRENT_LIST_DIR}/thirdparty
+        ${uWS_INCLUDE_DIRS})
+target_link_libraries(pid PRIVATE uWS ${uWS_LIBRARIES})

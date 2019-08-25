@@ -1,29 +1,38 @@
-project(MPC)
+cmake_minimum_required (VERSION 3.1)
 
-cmake_minimum_required (VERSION 3.5)
+project(MPC-controller LANGUAGES CXX)
 
-# -g allows for gdb debugging
-# turn on -03 for best performance
-add_definitions(-std=c++11 -O3)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CXX_FLAGS "-Wall")
-set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-g -Wall -O3")
 
-set(sources src/main.cpp src/mpc.cpp)
+# build uWebSockets at configure time locally
+if(NOT TARGET uWS)
+    set(uWS_EXACT_VERSION 0.13.0)
+    configure_file(../downloadUWsSockets.cmake.in uWebSockets-stage/CMakeLists.txt)
 
-include_directories(src/)
-include_directories(/usr/local/include)
-link_directories(/usr/local/lib)
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-stage
+    )
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} --build .
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-stage
+    )
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src
+                     ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build)
 
-include_directories(/usr/local/opt/openssl/include)
-link_directories(/usr/local/opt/openssl/lib)
-link_directories(/usr/local/Cellar/libuv/1.11.0/lib)
+    file(GLOB uWS_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src/src/*.h)
+    file(COPY ${uWS_HEADERS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include/uWS)
+    set(uWS_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include)
 
-endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    get_target_property(uWS_LIBRARIES uWS INTERFACE_LINK_LIBRARIES)
+endif()
 
-add_executable(mpc ${sources})
+add_executable(mpc src/main.cpp src/mpc.cpp)
 
-target_link_libraries(mpc ipopt z ssl uv uWS)
-
+target_include_directories(mpc PRIVATE ${uWS_INCLUDE_DIRS})
+target_link_libraries(mpc PRIVATE ${uWS_LIBRARIES})

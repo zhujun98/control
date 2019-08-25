@@ -1,7 +1,11 @@
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
+
 #include <iostream>
 #include <fstream>
-#include <uWS/uWS.h>
-#include "json.hpp"
+#include "uWS/uWS.h"
+#include "json/json.hpp"
 #include "pid.h"
 #include "utilities.h"
 

@@ -1,6 +1,6 @@
-//
-// pid.cpp
-//
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
 
 #ifndef PID_H
 #define PID_H
@@ -11,11 +11,9 @@
 class PID
 {
 public:
-  // constructor
-  PID();
+  PID() = default;
 
-  // destructor
-  virtual ~PID();
+  ~PID() = default;
 
   bool is_twiddle_; // twiddle flag
 
