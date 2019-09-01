@@ -1,6 +1,7 @@
-//
-// Model predictive controller
-//
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
+
 // TODO: How to handle evil fit?
 // TODO: Why the fit is prone to become evil when the PRED_TIME_STEP becomes small
 //
@@ -237,8 +238,6 @@ MPC::MPC(double latency, double max_speed) {
 
   is_last_fit_success_ = true;
 }
-
-MPC::~MPC() {}
 
 double MPC::getLatency() { return latency_; }
 

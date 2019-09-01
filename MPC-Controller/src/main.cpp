@@ -1,6 +1,7 @@
-//
-// Implementation of a model predictive controller
-//
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
+
 // Note: units in this project is not self-consistent
 // We assume the speed is in MPH and the time is in second
 //
@@ -9,9 +10,8 @@
 #include <chrono>
 #include <thread>
 
-#include <uWS/uWS.h>
-
-#include "json.hpp"
+#include "uWS/uWS.h"
+#include "json/json.hpp"
 #include "mpc.h"
 #include "utilities.h"
 
