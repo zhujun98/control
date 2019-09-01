@@ -19,7 +19,8 @@ mkdir -p build && cd build
 ../configure --prefix=$prefix --disable-shared --with-pic
 make install
 
-# Lapackcd $srcdir/ThirdParty/Lapack
+# Lapack
+cd $srcdir/ThirdParty/Lapack
 ./get.Lapack
 mkdir -p build && cd build
 ../configure --prefix=$prefix --disable-shared --with-pic \
@@ -27,7 +28,7 @@ mkdir -p build && cd build
 make install
 
 # ASL
-cd $srcdir//ThirdParty/ASL
+cd $srcdir/ThirdParty/ASL
 ./get.ASL
 
 # MUMPS
