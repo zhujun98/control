@@ -1,7 +1,6 @@
-//
-// Created by jun on 5/26/17.
-// help functions
-//
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
 
 #ifndef MPC_UTILITIES_H
 #define MPC_UTILITIES_H

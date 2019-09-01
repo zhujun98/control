@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.1)
+
+include(ExternalProject)
+
+ExternalProject_Add(uWS
+    GIT_REPOSITORY https://github.com/uNetworking/uWebSockets.git
+    GIT_TAG        v${uWS_EXACT_VERSION}
+
+    SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src"
+    BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build"
+
+    UPDATE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+    TEST_COMMAND ""
+)

@@ -1,6 +1,7 @@
-//
-// Model predictive controller
-//
+/*
+ * Author: Jun Zhu, zhujun981661@gmail.com
+ */
+
 #ifndef MPC_MPC_H
 #define MPC_MPC_H
 
@@ -13,11 +14,9 @@
 class MPC {
 public:
 
-  // constructor
   MPC(double latency, double max_speed);
 
-  // destructor
-  virtual ~MPC();
+  ~MPC() = default;
 
   //
   // Solve the model given an initial state and polynomial coefficients.

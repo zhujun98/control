@@ -9,22 +9,7 @@ Jun Zhu
 
 ## Dependencies
 
-#### [uWebSockets](https://github.com/uNetworking/uWebSockets) == 0.14
-~~~~
-sudo apt-get install libssl-dev openssl libuv1-dev zlib1g-dev
-
-git clone -b v0.13.0 https://github.com/uWebSockets/uWebSockets
-
-cd uWebSockets
-
-mkdir build
-cd build
-cmake ..
-make 
-sudo make install
-
-sudo ln -s /usr/lib64/libuWS.so /usr/lib/libuWS.so
-~~~~
+#### [uWebSockets](https://github.com/uNetworking/uWebSockets) == 0.13
 
 #### [Ipopt](https://projects.coin-or.org/Ipopt)
   
