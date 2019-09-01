@@ -3,18 +3,23 @@
 
 Jun Zhu
 
-![alt text](./highlight.png)
+![alt text](misc/highlight.png)
 
 ---
 
 ## Dependencies
 
-- [uWebSockets](https://github.com/uNetworking/uWebSockets) == 0.13
+#### [uWebSockets](https://github.com/uNetworking/uWebSockets) == 0.13
+
+```shell script
+# install dependencies for uWebSockets
+$ sudo apt-get install libssl-dev openssl libuv1-dev zlib1g-dev
+```
 
 ## Single PID controller
 
 A basic PID controller is implemented. The throttle is constant (0.3).
-![alt text](./PID-flowchart-1.png)
+![alt text](misc/PID-flowchart-1.png)
 
 Tuning of the PID controller can be divided into three steps:
 
@@ -30,7 +35,7 @@ The manually tuned coefficients are Kp=0.20, Ki=0.20, Kd=4.0 with an integration
 
 A throttle PID controller is added and the flow chart is shown below.
 
-![alt text](./PID-flowchart-2.png)
+![alt text](misc/PID-flowchart-2.png)
 
 It was found that the "twiddle" algorithm does not work well because of two reasons:
 [1] The result is random for one-lap run (partially because of the random initial position of the car).

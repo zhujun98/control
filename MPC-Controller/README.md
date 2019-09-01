@@ -3,13 +3,18 @@
 
 Jun Zhu
 
-![](./highlight.png)
+![](misc/highlight.png)
 
 ---
 
 ## Dependencies
 
 #### [uWebSockets](https://github.com/uNetworking/uWebSockets) == 0.13
+
+```shell script
+# install dependencies for uWebSockets
+$ sudo apt-get install libssl-dev openssl libuv1-dev zlib1g-dev
+```
 
 #### [Ipopt](https://projects.coin-or.org/Ipopt)
   
