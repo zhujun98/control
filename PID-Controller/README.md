@@ -1,5 +1,6 @@
 # PID Control
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+[![Build Status](https://travis-ci.org/zhujun98/control.svg?branch=master)](https://travis-ci.org/zhujun98/control)
 
 Jun Zhu
 
@@ -13,7 +14,8 @@ Jun Zhu
 
 ```shell script
 # install dependencies for uWebSockets
-$ sudo apt-get install libssl-dev openssl libuv1-dev zlib1g-dev
+$ sudo apt-get install libssl-dev libuv1-dev
+$ sudo apt-get install zlib1g-dev # may not be required
 ```
 
 ## Single PID controller

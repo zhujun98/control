@@ -1,0 +1,47 @@
+dist: trusty
+sudo: required
+language: cpp
+compiler:
+  - gcc
+matrix:
+  include:
+  - os: linux
+    addons:
+      apt:
+        sources:
+        - sourceline: 'ppa:ubuntu-toolchain-r/test'
+        - sourceline: 'ppa:acooks/libwebsockets6'
+        packages:
+        - gfortran
+        - g++-5
+        - cmake
+        - libssl-dev
+        - libuv1-dev
+    env: COMPILER=gcc GCC=5
+
+before_script:
+  - export CXX=g++-$GCC CC=gcc-$GCC
+
+script:
+  # test build PID-Controller project
+  - pushd PID-Controller
+  - mkdir build && pushd build
+  - cmake .. && make
+  - popd
+  - popd
+  # test build MPC-Controller project
+  - pushd MPC-Controller
+  - wget https://www.coin-or.org/download/source/Ipopt/Ipopt-3.12.7.zip
+  - unzip Ipopt-3.12.7.zip && rm Ipopt-3.12.7.zip
+  - sudo ./install_ipopt.sh Ipopt-3.12.7/
+  # install CppAD
+  - git clone https://github.com/coin-or/CppAD.git
+  - pushd CppAD
+  - mkdir build && cd build
+  - cmake .. && sudo make install
+  - popd
+  # build MPC-Controller
+  - mkdir build && pushd build
+  - cmake .. && make
+  - popd
+  - popd

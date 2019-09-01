@@ -1,5 +1,6 @@
 # Model Predictive Control
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+[![Build Status](https://travis-ci.org/zhujun98/control.svg?branch=master)](https://travis-ci.org/zhujun98/control)
 
 Jun Zhu
 
@@ -13,38 +14,13 @@ Jun Zhu
 
 ```shell script
 # install dependencies for uWebSockets
-$ sudo apt-get install libssl-dev openssl libuv1-dev zlib1g-dev
+$ sudo apt-get install libssl-dev libuv1-dev
+$ sudo apt-get install zlib1g-dev # may not be required
 ```
 
-#### [Ipopt](https://projects.coin-or.org/Ipopt)
+#### [Ipopt](https://projects.coin-or.org/Ipopt) and [CppAD](https://www.coin-or.org/CppAD/)
   
- __Getting Ipopt from package manager__
-  
- `sudo apt-get install coinor-libipopt-dev`
- 
- __Compiling Ipopt from sources__ 
-
- * Install dependencies
-`sudo apt-get install libblas-dev liblapck-dev libasl-dev libmetis-dev libmumps-dev`
-
-* Compile and install
-~~~~
-mkdir build
-cd build
-
-../configure --prefix=/usr/local ADD_FFLAGS=-fPIC ADD_CFLAGS=-fPIC ADD_CXXFLAGS=-fPIC
-
-make
-sudo make install
-~~~~
-
-* Test if pkg-config is able to find your Ipopt installation
-
-`pkg-config --libs ipopt`
-
-
-#### [CppAD](https://www.coin-or.org/CppAD/)
-`sudo apt-get install cppad`
+Follow the [instruction](https://github.com/udacity/CarND-MPC-Project/blob/master/install_Ipopt_CppAD.md).
 
 #### [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) = 3.3.3
 
