@@ -32,7 +32,7 @@ file(GLOB uWS_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src/src/*.h)
 file(COPY ${uWS_HEADERS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include/uWS)
 set(uWS_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include)
 
-get_target_property(uWS_LIBRARIES uWS INTERFACE_LINK_LIBRARIES)
+get_target_property(uWS_INTERFACE_LIBRARIES uWS INTERFACE_LINK_LIBRARIES)
 
 add_executable(pid
     src/pid.cpp
@@ -44,4 +44,4 @@ target_include_directories(pid
         ${CMAKE_CURRENT_LIST_DIR}/include
         ${CMAKE_CURRENT_LIST_DIR}/thirdparty
         ${uWS_INCLUDE_DIRS})
-target_link_libraries(pid PRIVATE uWS ${uWS_LIBRARIES})
+target_link_libraries(pid PRIVATE uWS ${uWS_INTERFACE_LIBRARIES})
