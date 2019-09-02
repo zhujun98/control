@@ -255,7 +255,7 @@ std::vector<double> MPC::getPredy() { return pred_y_; }
 
 void MPC::updatePred(const Eigen::VectorXd& state0) {
   Eigen::VectorXd next_state(4);
-  for (size_t i=0; i<next_state.size(); ++i) { next_state[i] = state0[i]; }
+  for (auto i=0; i<next_state.size(); ++i) { next_state[i] = state0[i]; }
 
   Eigen::VectorXd next_actuator(2);
   next_actuator[0] = steering_coeff_[0];
@@ -370,7 +370,7 @@ bool MPC::solve(Eigen::VectorXd state0, Eigen::VectorXd actuator0,
       xi[steering_coeff_.size()+i] = throttle_coeff_[i];
     }
   } else {
-    for (int i=0; i<nx; ++i) { xi[i] = 0; }
+    for (size_t i=0; i<nx; ++i) { xi[i] = 0; }
     xi[0] = actuator0[0];
     xi[steering_coeff_.size()] = actuator0[1];
   }
@@ -445,13 +445,13 @@ bool MPC::solve(Eigen::VectorXd state0, Eigen::VectorXd actuator0,
   std::cout << "solution status: " << solution.status << std::endl;
   std::cout << "Cost " << solution.obj_value << std::endl;
   std::cout << "optimized variables: ";
-  for (int i=0; i<solution.x.size(); ++i) {
+  for (size_t i=0; i<solution.x.size(); ++i) {
     std::cout << solution.x[i] << "  ";
   }
   std::cout << std::endl;
 
   std::cout << "constraints: ";
-  for (int i=0; i<solution.g.size(); ++i) {
+  for (size_t i=0; i<solution.g.size(); ++i) {
     std::cout << solution.g[i] << "  ";
   }
   std::cout << std::endl;
