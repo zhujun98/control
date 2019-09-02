@@ -32,7 +32,7 @@ file(GLOB uWS_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src/src/*.h)
 file(COPY ${uWS_HEADERS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include/uWS)
 set(uWS_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build/include)
 
-get_target_property(uWS_LIBRARIES uWS INTERFACE_LINK_LIBRARIES)
+get_target_property(uWS_INTERFACE_LIBRARIES uWS INTERFACE_LINK_LIBRARIES)
 
 add_executable(mpc src/main.cpp src/mpc.cpp)
 
@@ -41,4 +41,4 @@ target_include_directories(mpc
         ${CMAKE_CURRENT_LIST_DIR}/include
         ${CMAKE_CURRENT_LIST_DIR}/thirdparty
         ${uWS_INCLUDE_DIRS})
-target_link_libraries(mpc PRIVATE ${uWS_LIBRARIES} uWS ipopt)
+target_link_libraries(mpc PRIVATE ${uWS_INTERFACE_LIBRARIES} uWS ipopt)
