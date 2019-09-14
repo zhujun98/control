@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <cmath>
-#include <Eigen3.3/Eigen/Dense>
+#include <Eigen/Dense>
 
 
 // For converting back and forth between radians and degrees.

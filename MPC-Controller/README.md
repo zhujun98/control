@@ -22,7 +22,14 @@ $ sudo apt-get install zlib1g-dev # may not be required
   
 Follow the [instruction](https://github.com/udacity/CarND-MPC-Project/blob/master/install_Ipopt_CppAD.md).
 
-#### [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) = 3.3.3
+#### [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) >= 3.3.3
+
+```shell script
+$ git clone --branch 3.3.7 https://github.com/eigenteam/eigen-git-mirror.git
+$ cd eigen-git-mirror
+$ mkdir build && cd build
+$ cmake .. && make install
+```
 
 #### [Simulator](https://github.com/udacity/CarND-MPC-Project/releases)
 
