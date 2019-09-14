@@ -1,8 +1,6 @@
 dist: trusty
 sudo: required
 language: cpp
-compiler:
-  - gcc
 matrix:
   include:
   - os: linux
