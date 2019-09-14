@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <vector>
-#include <Eigen3.3/Eigen/Dense>
+#include <Eigen/Dense>
 #include <cmath>
 
 

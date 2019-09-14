@@ -37,6 +37,12 @@ script:
   - wget https://www.coin-or.org/download/source/Ipopt/Ipopt-3.12.7.zip
   - unzip Ipopt-3.12.7.zip && rm Ipopt-3.12.7.zip
   - sudo ./install_ipopt.sh Ipopt-3.12.7/
+  # install Eigen
+  - git clone --branch 3.3.7 https://github.com/eigenteam/eigen-git-mirror.git
+  - pushd eigen-git-mirror
+  - mkdir build && cd build
+  - cmake .. && sudo make install
+  - popd
   # install CppAD
   - git clone https://github.com/coin-or/CppAD.git
   - pushd CppAD

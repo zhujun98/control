@@ -9,7 +9,7 @@ ExternalProject_Add(uWS
     SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-src"
     BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/uWebSockets-build"
 
-    UPDATE_COMMAND ""
+    CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
     TEST_COMMAND ""
