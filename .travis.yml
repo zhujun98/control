@@ -16,27 +16,20 @@ matrix:
         - cmake
     env: COMPILER=gcc GCC=5
 
+before_install:
+  - export CXX=g++-$GCC CC=gcc-$GCC
+
 install:
   - sudo add-apt-repository -y ppa:acooks/libwebsockets6
   - sudo apt-get update
   # install dependencies for uWebSockets
   - sudo apt-get install libssl-dev libuv1-dev
-
-before_script:
-  - export CXX=g++-$GCC CC=gcc-$GCC
-
-script:
-  # test build PID-Controller project
-  - pushd PID-Controller
-  - mkdir build && pushd build
-  - cmake .. && make
-  - popd
-  - popd
-  # test build MPC-Controller project
+  # install Ipopt
   - pushd MPC-Controller
   - wget https://www.coin-or.org/download/source/Ipopt/Ipopt-3.12.7.zip
   - unzip Ipopt-3.12.7.zip && rm Ipopt-3.12.7.zip
   - sudo ./install_ipopt.sh Ipopt-3.12.7/
+  - popd
   # install Eigen
   - git clone --branch 3.3.7 https://github.com/eigenteam/eigen-git-mirror.git
   - pushd eigen-git-mirror
@@ -49,8 +42,15 @@ script:
   - mkdir build && cd build
   - cmake .. && sudo make install
   - popd
-  # build MPC-Controller
-  - mkdir build && pushd build
+
+script:
+  # build PID-Controller project
+  - pushd PID-Controller
+  - mkdir build && cd build
   - cmake .. && make
   - popd
+  # build MPC-Controller project
+  - pushd MPC-Controller
+  - mkdir build && cd build
+  - cmake .. && make
   - popd
