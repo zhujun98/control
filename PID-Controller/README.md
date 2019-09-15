@@ -18,6 +18,36 @@ $ sudo apt-get install libssl-dev libuv1-dev
 $ sudo apt-get install zlib1g-dev # may not be required
 ```
 
+## Build and run
+
+#### Build
+
+- Linux
+
+```shell script
+$ mkdir build && cd build
+$ cmake .. && make
+```
+
+- Mac
+
+```shell script
+$ mkdir build && cd build
+$ cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl/ .. && make
+```
+
+#### Run
+
+Start the controller by
+
+```shell script
+$ ./pid
+```
+
+Then, download and run the [simulator](https://github.com/udacity/self-driving-car-sim/releases/tag/v1.45).
+
+
+
 ## Single PID controller
 
 A basic PID controller is implemented. The throttle is constant (0.3).
