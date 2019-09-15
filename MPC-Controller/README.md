@@ -31,7 +31,33 @@ $ mkdir build && cd build
 $ cmake .. && make install
 ```
 
-#### [Simulator](https://github.com/udacity/CarND-MPC-Project/releases)
+## Build and run
+
+#### Build
+
+- Linux
+
+```shell script
+$ mkdir build && cd build
+$ cmake .. && make
+```
+
+- Mac
+
+```shell script
+$ mkdir build && cd build
+$ cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl/ .. && make
+```
+
+#### Run
+
+Start the controller by
+
+```shell script
+$ ./mpc
+```
+
+Then, download and run the [simulator](https://github.com/udacity/self-driving-car-sim/releases/tag/v1.45).
 
 
 ## Vehicle model
