@@ -1,7 +1,7 @@
 # Control
-[![Build Status](https://travis-ci.org/zhujun98/control.svg?branch=master)](https://travis-ci.org/zhujun98/control)
 
-Jun Zhu
+[![Build Status](https://travis-ci.com/zhujun98/control.svg?branch=master)](https://travis-ci.com/zhujun98/control)
+
 
 ## Test  codes
 
