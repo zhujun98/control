@@ -1,8 +1,5 @@
 # PID Control
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
-[![Build Status](https://travis-ci.org/zhujun98/control.svg?branch=master)](https://travis-ci.org/zhujun98/control)
-
-Jun Zhu
 
 ![alt text](misc/highlight.png)
 
